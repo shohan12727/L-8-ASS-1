@@ -31,10 +31,12 @@ function formatCoordinate(
 
 
 function concatenateArrays<T>(...arrays: T[][]): T[] {
-    return arrays.flat();
+  const result: T[] = [];
+  for (const arr of arrays) {
+    result.push(...arr);
+  }
+  return result;
 }
-
-
 
 
 
@@ -46,9 +48,11 @@ interface Course {
 }
 
 function getPopularCourses(courses: Course[], minStudents: number): Course[] {
-    return courses.filter((course) => {
+    const popularCourses: Course[] = courses.filter((course) => {
         return course.isPublished === true && course.students >= minStudents;
     });
+
+    return popularCourses;
 }
 
 
@@ -57,8 +61,6 @@ function getPopularCourses(courses: Course[], minStudents: number): Course[] {
 function pluckValues<T, K extends keyof T>(items: T[], key: K): T[K][] {
     return items.map((item) => item[key]);
 }
-
-
 
 
 
@@ -92,21 +94,16 @@ class Manager extends Employee {
 
 
 
+
 function validateAgeAsync(age: number): Promise<string> {
-    return new Promise((resolve, reject) => {
-
-        if (age < 18) {
-            reject(new Error("Access Denied: Must be 18 or older"));
-        }
-        else {
-            setTimeout(() => {
-                resolve("Access Granted");
-            }, 1000);
-        }
-
-    });
+  return new Promise<string>((resolve, reject) => {
+    if (age >= 18) {
+      setTimeout(() => {
+        resolve("Access Granted");
+      }, 1000);
+    } else {
+      reject(new Error("Access Denied: Must be 18 or older"));
+    }
+  });
 }
-
-
-
 
